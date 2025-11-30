@@ -6,6 +6,6 @@ namespace Movies.DAL.Models
     {
         [Required]
         [Display(Name = "Categoria")]
-        public int Name { get; set; }
+        public required string Name { get; set; }
     }
 }
