@@ -12,8 +12,8 @@ using Movies.DAL;
 namespace Movies.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251130223820_NullModifiedDateColumn")]
-    partial class NullModifiedDateColumn
+    [Migration("20251201173553_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
