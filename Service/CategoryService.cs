@@ -17,19 +17,46 @@ namespace Movies.Service
             _mapper = mapper;
         }
 
-        public Task<bool> CreateCategoryAsync(CategoryDto categoryDto)
+        public Task<bool> CategoryExistsByNameAsync(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteCategoryAsync(int id)
+        public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateDto categoryCreateDto)
+        {
+            //validates if the category already exists
+            var categoryExists = await _categoryRepository.CategoryExistsByNameAsync(categoryCreateDto.Name);
+            if (categoryExists)
+            {
+                throw new InvalidOperationException($"Ya existe una categoria con el nombre de '{categoryCreateDto.Name}'");
+            }
+
+            var category = _mapper.Map<Category>(categoryCreateDto);
+
+            var categoryCreated = await _categoryRepository.CreateCategoryAsync(category);
+
+            if (!categoryCreated)
+            {
+                throw new Exception("Ocurrio un problema al crear la categoria");
+            }
+
+            return _mapper.Map<CategoryDto>(category);
+        }
+
+        public Task<CategoryDto> UpdateCategoryAsync(int id, Category categoryDto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CategoryDto> GetCategoryAsync(int id)
+        public async Task<bool> DeleteCategoryAsync(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<CategoryDto> GetCategoryAsync(int id)
+        {
+            var category = await _categoryRepository.GetCategoryAsync(id); //Calling the method from repository
+            return _mapper.Map<CategoryDto>(category);
         }
 
         public async Task<ICollection<CategoryDto>> GetCategoriesAsync()
@@ -39,19 +66,10 @@ namespace Movies.Service
             return _mapper.Map<ICollection<CategoryDto>>(categories); //Mapping the data to DTO
         }
 
-        public Task<bool> UpdateCategoryAsync(CategoryDto categoryDto)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> CategoryExistsByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> CategoryExistsByNameAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
