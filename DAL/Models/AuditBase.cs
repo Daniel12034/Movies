@@ -9,6 +9,6 @@ namespace Movies.DAL.Models
 
         public virtual DateTime CreatedAt { get; set; }
 
-        public virtual DateTime UpdatedAt { get; set; }
+        public virtual DateTime? UpdatedAt { get; set; }
     }
 }
