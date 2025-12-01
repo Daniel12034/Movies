@@ -32,7 +32,7 @@ namespace Movies.Repository
         {
             category.CreatedAt = DateTime.UtcNow;
 
-            _context.Categories.Add(category);
+            await _context.Categories.AddAsync(category);
             return await SaveAsync();
         }
 
