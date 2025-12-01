@@ -22,7 +22,7 @@ namespace Movies.Service
             throw new NotImplementedException();
         }
 
-        public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateDto categoryCreateDto)
+        public async Task<CategoryDto> CreateCategoryAsync(CategoryCreateUpdateDto categoryCreateDto)
         {
             //validates if the category already exists
             var categoryExists = await _categoryRepository.CategoryExistsByNameAsync(categoryCreateDto.Name);
@@ -43,9 +43,34 @@ namespace Movies.Service
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public Task<CategoryDto> UpdateCategoryAsync(int id, Category categoryDto)
+        public async Task<CategoryDto> UpdateCategoryAsync(CategoryCreateUpdateDto dto, int id)
         {
-            throw new NotImplementedException();
+            //validates if the category already exists
+            var categoryExists = await _categoryRepository.GetCategoryAsync(id);
+            if (categoryExists == null)
+            {
+                throw new InvalidOperationException($"No se encontró una categoria con el id '{id}'");
+            }
+
+            var nameExists = await _categoryRepository.CategoryExistsByNameAsync(dto.Name);
+
+            if (nameExists)
+            {
+                throw new InvalidOperationException($"Ya existe una categoria con el nombre de '{dto.Name}'");
+            }
+
+            //Map the DTO to the entity
+            _mapper.Map(dto, categoryExists);
+
+            //Update the category
+            var categoryUpdated = await _categoryRepository.UpdateCategoryAsync(categoryExists);
+
+            if (!categoryUpdated)
+            {
+                throw new Exception("Ocurrio un error al actualizar la categoria");
+            }
+
+            return _mapper.Map<CategoryDto>(categoryExists);
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
@@ -70,6 +95,5 @@ namespace Movies.Service
         {
             throw new NotImplementedException();
         }
-
     }
 }
