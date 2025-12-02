@@ -75,7 +75,22 @@ namespace Movies.Service
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            //validates if the category exists to delete it
+            var categoryExists = await _categoryRepository.GetCategoryAsync(id);
+
+            if(categoryExists == null)
+            {
+                throw new InvalidOperationException($"No se encontró la categoria con ID: {id}");
+            }
+
+            //Delete the category from repository
+            var categoryDeleted = await _categoryRepository.DeleteCategoryAsync(id);
+
+            if (!categoryDeleted)
+            {
+                throw new Exception("Ocurrió un error al eliminar la categoria");
+            }
+            return categoryDeleted;
         }
 
         public async Task<CategoryDto> GetCategoryAsync(int id)
