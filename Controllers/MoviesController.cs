@@ -27,12 +27,17 @@ namespace Movies.Controllers
 
         [HttpGet("{id:int}", Name = "GetMovieAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MovieDto>> GetMovieAsync(int id)
         {
             var movieDto = await _movieService.GetMovieAsync(id);
+            if (movieDto == null)
+            {
+                return NotFound($"No se encontró una pelicula con el id {id}");
+            }
             return Ok(movieDto);
         }
 
