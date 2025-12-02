@@ -3,14 +3,14 @@ using Movies.DAL.Models;
 
 namespace Movies.Repository.IRepository
 {
-    public interface IMovieRepository
+    public interface ICategoryRepository
     {
-        Task<ICollection<Movie>> GetMoviesAsync(); //Returns a list of movies
-        Task<Movie> GetMovieAsync(int id); //Returns a specific movie register
-        Task<bool> MovieExistsByIdAsync(int id); //Returns a flag indicating a movie exists by its ID
-        Task<bool> MovieExistsByNameAsync(string name); //Returns a flag indicating a movie exists by its name
-        Task<bool> CreateMovieAsync(Movie movie); //Create a movie 
-        Task<bool> UpdateMovieAsync(Movie movie); //Update a movie 
-        Task<bool> DeleteMovieAsync(int id); //Delete a movie 
+        Task<ICollection<Category>> GetCategoriesAsync(); //Returns a list of categories
+        Task<Category> GetCategoryAsync(int id); //Returns a specific category register
+        Task<bool> CategoryExistsByIdAsync(int id); //Returns a flag indicating a category exists by it's ID
+        Task<bool> CategoryExistsByNameAsync(string name); //Returns a flag indicating a category exists by it's name
+        Task<bool> CreateCategoryAsync(Category category); //Create a category 
+        Task<bool> UpdateCategoryAsync(Category category); //Update a category 
+        Task<bool> DeleteCategoryAsync(int id); //Delete a category 
     }
 }
